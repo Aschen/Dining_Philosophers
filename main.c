@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 15:42:01 2014 brunne-r
-** Last update Mon Mar 17 16:46:41 2014 brunne-r
+** Last update Mon Mar 17 16:54:47 2014 brunne-r
 */
 
 #include "philo.h"
@@ -15,10 +15,27 @@ static pthread_mutex_t  lock = PTHREAD_MUTEX_INITIALIZER;
 void		*fct(void *arg)
 {
   t_list	*me;
+  int		food;
+  char		last_state;
 
   me = (t_list*)arg;
+  food = 1;
+  last_state = 0;
+  while (food)
+    {
+      if (me->stick == 1 && me->next->stick == 1)
+	{
+	  printf("Philo %d: I'm eating\n", me->id);
+	  last_state = 2;
+	}
+      else if (me->stick == 0)
+	{
+	  printf("Philo %d: Time to sleep\n", me->id);
+	  last_state = 0;
+	}
+      else if (me->stick == 2
+    }
   pthread_mutex_lock(&lock);
-  printf("I'm philo %d with %d sticks\n", me->id, me->stick);
   pthread_mutex_unlock(&lock);
   pthread_exit(0);
   return NULL;

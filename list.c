@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 16:18:33 2014 brunne-r
-** Last update Mon Mar 17 16:41:37 2014 brunne-r
+** Last update Mon Mar 17 16:59:21 2014 brunne-r
 */
 
 #include "philo.h"
@@ -39,6 +39,7 @@ void	push(t_list **list)
   if (!(elem = malloc(sizeof(t_list))))
       _error("not enough memory");
   elem->stick = 1;
+  elem->state = SLEEP;
   if (*list)
     {
       before = last(*list);

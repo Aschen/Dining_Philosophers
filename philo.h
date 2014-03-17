@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 16:18:46 2014 brunne-r
-** Last update Mon Mar 17 16:41:17 2014 brunne-r
+** Last update Mon Mar 17 16:59:56 2014 brunne-r
 */
 
 #ifndef PHILO_H
@@ -18,12 +18,17 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+# define SLEEP	0
+# define THINK	1
+# define EAT	2
+
 typedef		struct s_list	t_list;
 
 struct		s_list
 {
   char		id;
   char		stick;
+  char		state;
   t_list	*next;
 };
 
