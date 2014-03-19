@@ -32,8 +32,8 @@ struct		s_list
   t_list	*next;
 };
 
-void	plist(t_list *list);
-void	push(t_list **list);
-void	_error(char *s);
+void		plist(t_list *list);
+void		push(t_list **list);
+void		_error(char *s);
 
 #endif /* !PHILO_H */

@@ -12,28 +12,59 @@
 
 static pthread_mutex_t  lock = PTHREAD_MUTEX_INITIALIZER;
 
+void		eat(t_list *me)
+{
+  printf("Philo %d: Eat (%d)\n", me->id, me->stick);
+  me->stick = 0;
+  me->state = EAT;
+}
+
+void		think(t_list *me)
+{
+  printf("Philo %d: Eat (%d)\n", me->id, me->stick);
+  me->stick = 0;
+  me->state = THINK;
+}
+
+void		_sleep(t_list *me)
+{
+  printf("Philo %d: Sleep (%d)\n", me->id, me->stick);
+  me->state = SLEEP;
+}
+
+void		start(t_list *me)
+{
+  if (me->stick == 1 && me->next->stick == 1)
+    eat(me);
+  else if (me->state == THINK && me->next->stick == 1)
+    eat(me);
+  else if (me->stick == 1 && me->next->state == EAT)
+    think(me);
+  else
+    _sleep(me);
+}
+
+void		stop(t_list *me)
+{
+  if (me->state == EAT)
+    {
+      me->state = SLEEP;
+      me->stick = 1;
+    }
+}
+
 void		*fct(void *arg)
 {
   t_list	*me;
   int		food;
-  char		last_state;
 
   me = (t_list*)arg;
   food = 1;
-  last_state = 0;
   while (food)
     {
-      if (me->stick == 1 && me->next->stick == 1)
-	{
-	  printf("Philo %d: I'm eating\n", me->id);
-	  last_state = 2;
-	}
-      else if (me->stick == 0)
-	{
-	  printf("Philo %d: Time to sleep\n", me->id);
-	  last_state = 0;
-	}
-      else if (me->stick == 2
+      start(me);
+      stop(me);
+      sleep(1);
     }
   pthread_mutex_lock(&lock);
   pthread_mutex_unlock(&lock);
