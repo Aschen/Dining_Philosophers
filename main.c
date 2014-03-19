@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 15:42:01 2014 brunne-r
-** Last update Wed Mar 19 14:02:04 2014 brunne-r
+** Last update Wed Mar 19 17:58:23 2014 brunne-r
 */
 
 #include "philo.h"
@@ -20,35 +20,65 @@ void		kill_threads(pthread_t *th, int size)
       pthread_kill(th[i], SIGKILL);
       ++i;
     }
-  _error("Few threads are unreachable");
+  _error("A thread is unreachable");
 }
 
-int		launch(t_conf *c)
+void		*xmalloc(size_t size)
 {
-  t_list	*philo;
-  t_list	*send;
-  pthread_t	philos[7];
+  void		*buf;
+
+  buf =	malloc(size);
+  if (!buf)
+    _error("Not enough memory");
+  return buf;
+}
+
+t_list		*create_list(int number)
+{
   int		i;
+  t_list	*philo;
 
   i = -1;
   philo = NULL;
-  while (++i < NPHIL)
+  while (++i < number)
     push(&philo);
+  return philo;
+}
+
+void		printl(t_list *list)
+{
+  printf("Philo [%d]\n", list->id);
+  if (list->next->id > list->id)
+    printl(list->next);
+}
+
+void		launch(t_conf *c)
+{
+  t_list	*philos;
+  t_param	param;
+  pthread_t	*ths;
+  int		i;
+
   i = -1;
-  send = philo;
-  while (++i < NPHIL)
+  philos = create_list(c->number);
+  printl(philos);
+  ths = xmalloc(sizeof(pthread_t) * c->number);
+  param.list = philos;
+  param.conf = c;
+  set_dep();
+  while (++i < c->number)
     {
-      if (pthread_create(&philos[i], NULL, &fct, send) < 0)
+      if (pthread_create(&ths[i], NULL, &philo_life, &param) < 0)
 	_error("Can't create more threads");
-      send = send->next;
+      param.list = param.list->next;
     }
   i = -1;
-  while (++i < NPHIL)
+  while (++i < c->number)
     {
-      if (pthread_join(philos[i], NULL) != 0)
-	kill_threads();
+      if (pthread_join(ths[i], NULL) != 0)
+	kill_threads(ths, c->number);
     }
-  return 0;
+  free(ths);
 }
 
 
@@ -59,5 +89,13 @@ int		main(int ac, char **av)
   init(&conf);
   if (ac == 2)
     fill_conf(&conf, av[1]);
+  printf("###########################\n");
+  printf("## CONF     : %10s ##\n", av[1]);
+  printf("## philos   : %10d ##\n", conf.number);
+  printf("## food     : %10d ##\n", conf.food);
+  printf("## eat(us)  : %10d ##\n", conf.eattime);
+  printf("## think(us): %10d ##\n", conf.thinktime);
+  printf("###########################\n");
   launch(&conf);
+  return (EXIT_SUCCESS);
 }

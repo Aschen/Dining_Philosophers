@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 16:18:33 2014 brunne-r
-** Last update Tue Mar 18 12:00:52 2014 brunne-r
+** Last update Wed Mar 19 17:58:29 2014 brunne-r
 */
 
 #include "philo.h"
@@ -22,13 +22,6 @@ t_list	*last(t_list *list)
     return last(list->next);
   else
     return list;
-}
-
-void	plist(t_list *list)
-{
-  printf("Philo number %d\n", list->id);
-  if (list->next->id > list->id)
-    plist(list->next);
 }
 
 void	push(t_list **list)

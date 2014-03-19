@@ -12,12 +12,13 @@ CC	=	clang
 SRCS	=	main.c \
 		list.c \
 		pars.c \
+		core.c \
 
 CFLAGS	=	-W -Wall -Wextra
 
 OBJS	=	$(SRCS:.c=.o)
 
-NAME	=	test
+NAME	=	philo
 
 all:	$(NAME)
 

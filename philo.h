@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 16:18:46 2014 brunne-r
-** Last update Wed Mar 19 12:30:16 2014 brunne-r
+** Last update Wed Mar 19 17:33:47 2014 brunne-r
 */
 
 #ifndef PHILO_H
@@ -17,6 +17,8 @@
 # include <sys/types.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <signal.h>
+# include <sys/time.h>
 
 # define SLEEP		0
 # define THINK		1
@@ -47,9 +49,19 @@ typedef struct		s_conf
   int			thinktime;
 }			t_conf;
 
+typedef struct		s_param
+{
+  t_list		*list;
+  t_conf		*conf;
+}			t_param;
+
 void			fill_conf(t_conf *conf, char *file);
 void			plist(t_list *list);
 void			push(t_list **list);
 void			_error(char *s);
-int			launch(t_conf *c);
+void			launch(t_conf *c);
+void			*philo_life(void *arg);
+void			init(t_conf *c);
+void			set_dep(void);
+
 #endif /* !PHILO_H */
