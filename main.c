@@ -66,13 +66,13 @@ void		*fct(void *arg)
   actions[EAT] = &philo_eat;
   actions[THINK] = &philo_think;
   me = (t_list*)arg;
-  food = 5;
+  food = FOOD;
   while (food)
     {
+      sleep(3);
       food -= (actions[(int)me->state](me));
-      usleep(MUSL);
     }
-    pthread_exit(0);
+  pthread_exit(0);
   return NULL;
 }
 
@@ -80,23 +80,32 @@ int		main(void)
 {
   t_list	*philo;
   t_list	*send;
+  t_sdl		game;
   pthread_t	philos[7];
+  pthread_t	sdl;
   int		i;
 
   i = -1;
   philo = NULL;
+  (void)send;
+  (void)philos;
   while (++i < NPHIL)
     push(&philo);
+  game.philos = philo;
+  init_sdl(&game);
+  if (pthread_create(&sdl, NULL, &sdl_loop, &game) < 0)
+    _error(strdup("main() : phtread_create"));
   i = -1;
   send = philo;
   while (++i < NPHIL)
     {
       if (pthread_create(&philos[i], NULL, &fct, send) < 0)
-	_error("pthread fail");
+  	_error("pthread fail");
       send = send->next;
     }
   i = -1;
+  pthread_join(sdl, NULL);
   while (++i < NPHIL)
     pthread_join(philos[i], NULL);
-  return 0;
+  return (0);
 }

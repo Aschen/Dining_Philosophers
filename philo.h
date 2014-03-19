@@ -17,6 +17,8 @@
 # include <sys/types.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <SDL/SDL.h>
+# include <SDL/SDL_image.h>
 
 # define SLEEP		0
 # define THINK		1
@@ -26,9 +28,16 @@
 # define MUEAT		(MUTH / 2)
 # define MUSL		1000
 
-# define NPHIL		5
+# define NPHIL		7
+# define FOOD		2
 
-typedef			struct s_list	t_list;
+# define QUIT		0
+# define CONTINUE	1
+# define X		0
+# define Y		1
+
+typedef struct s_list	t_list;
+typedef struct s_sdl	t_sdl;
 
 struct			s_list
 {
@@ -39,7 +48,23 @@ struct			s_list
   t_list		*next;
 };
 
+struct			s_sdl
+{
+  SDL_Surface		*screen;
+  SDL_Surface		*background;
+  SDL_Surface		*images[3];
+  char			*file;
+  int			size[2];
+  t_list		*philos;
+  int			*pos;
+};
+
+void			init_sdl(t_sdl *game);
+
+void			*sdl_loop(void *game);
+
 void			plist(t_list *list);
+int			lenght(t_list *list);
 void			push(t_list **list);
 void			_error(char *s);
 

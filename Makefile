@@ -11,8 +11,12 @@ CC	=	clang
 
 SRCS	=	main.c \
 		list.c \
+		sdl_init.c \
+		sdl_event.c \
 
 CFLAGS	=	-W -Wall -Wextra
+
+CFLAGS +=	`sdl-config --cflags`
 
 OBJS	=	$(SRCS:.c=.o)
 
@@ -21,7 +25,7 @@ NAME	=	test
 all:	$(NAME)
 
 $(NAME):	$(OBJS)
-	$(CC) -o $(NAME) $(OBJS) -lpthread
+	$(CC) `sdl-config --libs` -o $(NAME) $(OBJS) -lpthread -lSDL_gfx -lSDL_image
 
 clean:
 	rm -f $(OBJS)

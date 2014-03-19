@@ -18,10 +18,7 @@ void	_error(char *s)
 
 t_list	*last(t_list *list)
 {
-  if (list->next->id > list->id)
-    return last(list->next);
-  else
-    return list;
+  return (list->next->id > list->id) ? last(list->next) : list;
 }
 
 void	plist(t_list *list)
@@ -29,6 +26,11 @@ void	plist(t_list *list)
   printf("Philo number %d\n", list->id);
   if (list->next->id > list->id)
     plist(list->next);
+}
+
+int	lenght(t_list *list)
+{
+  return (list->id > list->next->id) ? (1) : (1 + lenght(list->next));
 }
 
 void	push(t_list **list)
