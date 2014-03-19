@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 16:18:46 2014 brunne-r
-** Last update Wed Mar 19 11:35:12 2014 brunne-r
+** Last update Wed Mar 19 12:30:16 2014 brunne-r
 */
 
 #ifndef PHILO_H
@@ -39,8 +39,17 @@ struct			s_list
   t_list		*next;
 };
 
+typedef struct		s_conf
+{
+  int			number;
+  int			food;
+  int			eattime;
+  int			thinktime;
+}			t_conf;
+
+void			fill_conf(t_conf *conf, char *file);
 void			plist(t_list *list);
 void			push(t_list **list);
 void			_error(char *s);
-
+int			launch(t_conf *c);
 #endif /* !PHILO_H */

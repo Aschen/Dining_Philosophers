@@ -11,6 +11,7 @@ CC	=	clang
 
 SRCS	=	main.c \
 		list.c \
+		pars.c \
 
 CFLAGS	=	-W -Wall -Wextra
 
