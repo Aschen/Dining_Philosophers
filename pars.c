@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Wed Mar 19 11:48:14 2014 brunne-r
-** Last update Wed Mar 19 12:28:10 2014 brunne-r
+** Last update Thu Mar 20 14:48:48 2014 brunne-r
 */
 
 #include "philo.h"
@@ -68,14 +68,12 @@ void		fill_conf(t_conf *conf, char *file)
   FILE		*f;
 
   f = open_file(file);
+  line = NULL;
   while (getline(&line, &n, f) > 0)
     {
       fill_token(line, conf);
+      free(line);
+      line = NULL;
     }
   check(conf);
-  printf("Conf for %s:\n", file);
-  printf("Philosophes: %d\n", conf->number);
-  printf("Food: %d\n", conf->food);
-  printf("Time to eat: %d\n", conf->eattime);
-  printf("Time to think: %d\n", conf->thinktime);
 }

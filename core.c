@@ -5,17 +5,10 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Wed Mar 19 12:28:57 2014 brunne-r
-** Last update Wed Mar 19 17:49:58 2014 brunne-r
+** Last update Thu Mar 20 14:41:15 2014 brunne-r
 */
 
 #include "philo.h"
-
-static struct timeval dep;
-
-void		set_dep(void)
-{
-  gettimeofday(&dep, NULL);
-}
 
 int		philo_think(t_list *list, t_conf *c)
 {
@@ -27,6 +20,7 @@ int		philo_think(t_list *list, t_conf *c)
   usleep(c->thinktime);
   if (r != 0)
     pthread_mutex_trylock(&(list->next->stick));
+  printf("[%d] : Prepare to eat\n", list->id);
   list->state = EAT;
   return 0;
 }
@@ -37,15 +31,16 @@ int		philo_sleep(t_list *list, t_conf *c)
 
   (void)c;
   loop = 1;
-  printf("[%d] : Sleeping...\n", list->id);
   list->state = SLEEP;
+  printf("[%d] : Sleeping...\n", list->id);
   while (loop)
     {
       if (list->prev->state != THINK && list->next->state != THINK)
 	{
 	  pthread_mutex_lock(&(list->stick));
-	  loop = 0;
 	  list->state = THINK;
+	  printf("[%d] : Start thinking\n", list->id);
+	  loop = 0;
 	}
       else
 	usleep(MUSL);
@@ -55,12 +50,13 @@ int		philo_sleep(t_list *list, t_conf *c)
 
 int		philo_eat(t_list *list, t_conf *c)
 {
-  printf("[%d] : Eat like a pig !\n", list->id);
   list->state = EAT;
+  printf("[%d] : Eat like a pig !\n", list->id);
   usleep(c->eattime);
   pthread_mutex_unlock(&(list->stick));
   pthread_mutex_unlock(&(list->next->stick));
   list->state = SLEEP;
+  printf("[%d] : Fall asleep...\n", list->id);
   return 1;
 }
 
@@ -71,12 +67,12 @@ void		*philo_life(void *arg)
   int		food;
   int		(*actions[3])(t_list*, t_conf*);
 
-  actions[SLEEP] = &philo_sleep;
-  actions[EAT] = &philo_eat;
-  actions[THINK] = &philo_think;
   param = (t_param*)arg;
   me = param->list;
   food = param->conf->food;
+  actions[SLEEP] = &philo_sleep;
+  actions[EAT] = &philo_eat;
+  actions[THINK] = &philo_think;
   while (food)
     {
       food -= (actions[(int)me->state](me, param->conf));

@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 15:42:01 2014 brunne-r
-** Last update Wed Mar 19 17:58:23 2014 brunne-r
+** Last update Thu Mar 20 14:50:56 2014 brunne-r
 */
 
 #include "philo.h"
@@ -45,13 +45,6 @@ t_list		*create_list(int number)
   return philo;
 }
 
-void		printl(t_list *list)
-{
-  printf("Philo [%d]\n", list->id);
-  if (list->next->id > list->id)
-    printl(list->next);
-}
-
 void		launch(t_conf *c)
 {
   t_list	*philos;
@@ -61,16 +54,16 @@ void		launch(t_conf *c)
 
   i = -1;
   philos = create_list(c->number);
-  printl(philos);
   ths = xmalloc(sizeof(pthread_t) * c->number);
   param.list = philos;
   param.conf = c;
-  set_dep();
   while (++i < c->number)
     {
       if (pthread_create(&ths[i], NULL, &philo_life, &param) < 0)
 	_error("Can't create more threads");
+      usleep(MUSL);
       param.list = param.list->next;
+      philos = param.list;
     }
   i = -1;
   while (++i < c->number)
@@ -81,7 +74,6 @@ void		launch(t_conf *c)
   free(ths);
 }
 
-
 int		main(int ac, char **av)
 {
   t_conf	conf;
@@ -90,7 +82,7 @@ int		main(int ac, char **av)
   if (ac == 2)
     fill_conf(&conf, av[1]);
   printf("###########################\n");
-  printf("## CONF     : %10s ##\n", av[1]);
+  printf("## CONF     : %10s ##\n", (ac == 2) ? (av[1]) : ("(empty)"));
   printf("## philos   : %10d ##\n", conf.number);
   printf("## food     : %10d ##\n", conf.food);
   printf("## eat(us)  : %10d ##\n", conf.eattime);

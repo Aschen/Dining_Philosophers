@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 16:18:46 2014 brunne-r
-** Last update Wed Mar 19 17:33:47 2014 brunne-r
+** Last update Thu Mar 20 14:43:32 2014 brunne-r
 */
 
 #ifndef PHILO_H
