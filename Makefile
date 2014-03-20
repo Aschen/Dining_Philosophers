@@ -7,7 +7,7 @@
 ## Started on  Mon 17/03/2014 00:00
 ##
 
-CC	=	clang
+CC	=	gcc
 
 SRCS	=	main.c \
 		list.c \
@@ -16,7 +16,7 @@ CFLAGS	=	-W -Wall -Wextra
 
 OBJS	=	$(SRCS:.c=.o)
 
-NAME	=	test
+NAME	=	philo
 
 all:	$(NAME)
 
