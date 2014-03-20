@@ -10,36 +10,30 @@
 
 #include "philo.h"
 
-void	_error(char *s)
-{
-  fprintf(stderr, "%s\n", s);
-  exit(EXIT_FAILURE);
-}
-
-t_list	*last(t_list *list)
+t_list		*last(t_list *list)
 {
   return (list->next->id > list->id) ? last(list->next) : list;
 }
 
-void	plist(t_list *list)
+void		plist(t_list *list)
 {
   printf("Philo number %d\n", list->id);
   if (list->next->id > list->id)
     plist(list->next);
 }
 
-int	lenght(t_list *list)
+int		lenght(t_list *list)
 {
   return (list->id > list->next->id) ? (1) : (1 + lenght(list->next));
 }
 
-void	push(t_list **list)
+void		push(t_list **list)
 {
   t_list	*elem;
   t_list	*before;
 
   if (!(elem = malloc(sizeof(t_list))))
-      _error("not enough memory");
+    _error(strdup("not enough memory"));
   elem->state = SLEEP;
   pthread_mutex_init(&(elem->stick), NULL);
   if (*list)

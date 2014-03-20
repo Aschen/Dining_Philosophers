@@ -33,7 +33,7 @@ static void	load_background(t_sdl *game)
   SDL_Flip(game->screen);
 }
 
-static void	a_enlever(t_sdl *game)
+static void	init_game(t_sdl *game)
 {
   int		i = 0;
 
@@ -41,7 +41,7 @@ static void	a_enlever(t_sdl *game)
   game->size[X] = 600;
   game->size[Y] = 600;
   if ((game->pos = malloc(sizeof(int) * lenght(game->philos) * 2)) == NULL)
-    _error(strdup("a_enlever() : Malloc"));
+    _error(strdup("init_game() : Malloc"));
   game->pos[i++] = 420;
   game->pos[i++] = 20;
   game->pos[i++] = 500;
@@ -58,15 +58,21 @@ static void	a_enlever(t_sdl *game)
   game->pos[i++] = 10;
 }
 
-void		init_sdl(t_sdl *game)
+void		init_sdl(t_sdl *game, t_list *philos)
 {
-  a_enlever(game);
+  pthread_t	sdl_thread;
+
+  game->philos = philos;
+  init_game(game);
   if (SDL_Init(SDL_INIT_VIDEO) < 0)
     _error(strdup("init_sdl : Init"));
-  if (!(game->screen = SDL_SetVideoMode(game->size[X], game->size[Y], 32, SDL_HWSURFACE)))
+  if (!(game->screen = SDL_SetVideoMode(game->size[X], game->size[Y]
+					, 32, SDL_HWSURFACE)))
     _error(strdup("init_sdl : SetVideoMode"));
   SDL_WM_SetCaption("Philosophes", NULL);
   load_images(game);
   load_background(game);
+  if (pthread_create(&sdl_thread, NULL, &sdl_loop, game) < 0)
+    _error(strdup("main() : phtread_create"));
 }
 

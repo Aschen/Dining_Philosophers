@@ -13,6 +13,7 @@ SRCS	=	main.c \
 		list.c \
 		sdl_init.c \
 		sdl_event.c \
+		misc.c \
 
 CFLAGS	=	-W -Wall -Wextra
 

@@ -10,9 +10,8 @@
 
 #include "philo.h"
 
-static int	hook_event(SDL_Event *event, t_sdl *game)
+static int	hook_event(SDL_Event *event)
 {
-  (void)game;
   if (event->type == SDL_QUIT || event->type == SDL_KEYDOWN)
     return (QUIT);
   return (CONTINUE);
@@ -24,7 +23,8 @@ static void	update_state(t_sdl *game, t_list *philos)
 
   p.x = game->pos[philos->id * 2];
   p.y = game->pos[philos->id * 2 + 1];
-  if (SDL_BlitSurface(game->images[(int)philos->state], NULL, game->screen, &p) < 0)
+  if (SDL_BlitSurface(game->images[(int)philos->state]
+		      , NULL, game->screen, &p) < 0)
     _error(strdup("update_state() : BlitSurface"));
   if (philos->next->id > philos->id)
     update_state(game, philos->next);
@@ -44,12 +44,13 @@ void		*sdl_loop(void *arg)
   while (flag)
     {
       if (SDL_PollEvent(&event))
-	flag = hook_event(&event, game);
+	flag = hook_event(&event);
       if (SDL_BlitSurface(game->background, NULL, game->screen, &p) < 0)
 	_error(strdup("sld_loop() : BlitSurface"));
       update_state(game, game->philos);
       SDL_Flip(game->screen);
       usleep(1000);
     }
-  return (0);
+  pthread_exit(0);
+  return (NULL);
 }

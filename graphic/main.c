@@ -14,14 +14,13 @@ int		philo_think(t_list *list)
 {
   int		r;
 
-  printf("[%d] : Thinking...\n", list->id);
   list->state = THINK;
   r = pthread_mutex_trylock(&(list->next->stick));
   usleep(MUTH);
   if (r != 0)
     pthread_mutex_trylock(&(list->next->stick));
   list->state = EAT;
-  return 0;
+  return (0);
 }
 
 int		philo_sleep(t_list *list)
@@ -29,7 +28,6 @@ int		philo_sleep(t_list *list)
   int		loop;
 
   loop = 1;
-  printf("[%d] : Sleeping...\n", list->id);
   list->state = SLEEP;
   while (loop)
     {
@@ -42,18 +40,17 @@ int		philo_sleep(t_list *list)
       else
 	usleep(MUSL);
     }
-  return 0;
+  return (0);
 }
 
 int		philo_eat(t_list *list)
 {
-  printf("[%d] : Eat like a pig !\n", list->id);
   list->state = EAT;
   usleep(MUEAT);
   pthread_mutex_unlock(&(list->stick));
   pthread_mutex_unlock(&(list->next->stick));
   list->state = SLEEP;
-  return 1;
+  return (1);
 }
 
 void		*fct(void *arg)
@@ -69,43 +66,37 @@ void		*fct(void *arg)
   food = FOOD;
   while (food)
     {
-      sleep(3);
       food -= (actions[(int)me->state](me));
+      sleep(2);
     }
   pthread_exit(0);
-  return NULL;
+  return (NULL);
 }
 
 int		main(void)
 {
-  t_list	*philo;
+  t_list	*philos;
   t_list	*send;
   t_sdl		game;
-  pthread_t	philos[7];
-  pthread_t	sdl;
+  pthread_t	threads[NPHIL];
   int		i;
 
   i = -1;
-  philo = NULL;
-  (void)send;
-  (void)philos;
+  philos = NULL;
   while (++i < NPHIL)
-    push(&philo);
-  game.philos = philo;
-  init_sdl(&game);
-  if (pthread_create(&sdl, NULL, &sdl_loop, &game) < 0)
-    _error(strdup("main() : phtread_create"));
+    push(&philos);
+  init_sdl(&game, philos);
   i = -1;
-  send = philo;
+  send = philos;
   while (++i < NPHIL)
     {
-      if (pthread_create(&philos[i], NULL, &fct, send) < 0)
-  	_error("pthread fail");
+      if (pthread_create(&threads[i], NULL, &fct, send) < 0)
+  	_error(strdup("pthread fail"));
       send = send->next;
     }
   i = -1;
-  pthread_join(sdl, NULL);
   while (++i < NPHIL)
-    pthread_join(philos[i], NULL);
+    pthread_join(threads[i], NULL);
+  free_sdl(&game);
   return (0);
 }

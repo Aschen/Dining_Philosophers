@@ -29,7 +29,7 @@
 # define MUSL		1000
 
 # define NPHIL		7
-# define FOOD		2
+# define FOOD		5
 
 # define QUIT		0
 # define CONTINUE	1
@@ -59,13 +59,12 @@ struct			s_sdl
   int			*pos;
 };
 
-void			init_sdl(t_sdl *game);
-
+void			init_sdl(t_sdl *game, t_list *philos);
 void			*sdl_loop(void *game);
-
 void			plist(t_list *list);
 int			lenght(t_list *list);
 void			push(t_list **list);
+void			free_sdl(t_sdl *game);
 void			_error(char *s);
 
 #endif /* !PHILO_H */
