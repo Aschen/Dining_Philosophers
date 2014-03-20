@@ -7,26 +7,21 @@
 ## Started on  Mon 17/03/2014 00:00
 ##
 
-CC	=	gcc
+CC	=	clang
 
 SRCS	=	main.c \
 		list.c \
-		sdl_init.c \
-		sdl_event.c \
-		misc.c \
 
 CFLAGS	=	-W -Wall -Wextra
 
-CFLAGS +=	`sdl-config --cflags`
-
 OBJS	=	$(SRCS:.c=.o)
 
-NAME	=	philo
+NAME	=	test
 
 all:	$(NAME)
 
 $(NAME):	$(OBJS)
-	$(CC) `sdl-config --libs` -o $(NAME) $(OBJS) -lpthread -lSDL_gfx -lSDL_image
+	$(CC) -o $(NAME) $(OBJS) -lpthread
 
 clean:
 	rm -f $(OBJS)

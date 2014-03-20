@@ -36,7 +36,9 @@ void		*sdl_loop(void *arg)
   t_sdl		*game;
   SDL_Event	event;
   int		flag;
+  int		i;
 
+  i = -1;
   flag = 1;
   p.x = 0;
   p.y = 0;
@@ -51,6 +53,8 @@ void		*sdl_loop(void *arg)
       SDL_Flip(game->screen);
       usleep(1000);
     }
+  while (++i < NPHIL)
+    pthread_kill(game->threads[i], SIGKILL);
   pthread_exit(0);
   return (NULL);
 }

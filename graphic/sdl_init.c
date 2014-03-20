@@ -58,10 +58,11 @@ static void	init_game(t_sdl *game)
   game->pos[i++] = 10;
 }
 
-void		init_sdl(t_sdl *game, t_list *philos)
+void		init_sdl(t_sdl *game, t_list *philos, pthread_t *threads)
 {
   pthread_t	sdl_thread;
 
+  game->threads = threads;
   game->philos = philos;
   init_game(game);
   if (SDL_Init(SDL_INIT_VIDEO) < 0)

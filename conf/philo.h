@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 16:18:46 2014 brunne-r
-** Last update Wed Mar 19 11:35:12 2014 brunne-r
+** Last update Thu Mar 20 14:43:32 2014 brunne-r
 */
 
 #ifndef PHILO_H
@@ -17,25 +17,20 @@
 # include <sys/types.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include <SDL/SDL.h>
-# include <SDL/SDL_image.h>
 # include <signal.h>
+# include <sys/time.h>
 
 # define SLEEP		0
 # define THINK		1
 # define EAT		2
+
 # define MUTH		200000
 # define MUEAT		(MUTH / 2)
 # define MUSL		1000
-# define NPHIL		7
-# define FOOD		5
-# define QUIT		0
-# define CONTINUE	1
-# define X		0
-# define Y		1
 
-typedef struct s_list	t_list;
-typedef struct s_sdl	t_sdl;
+# define NPHIL		5
+
+typedef			struct s_list	t_list;
 
 struct			s_list
 {
@@ -46,24 +41,27 @@ struct			s_list
   t_list		*next;
 };
 
-struct			s_sdl
+typedef struct		s_conf
 {
-  SDL_Surface		*screen;
-  SDL_Surface		*background;
-  SDL_Surface		*images[3];
-  pthread_t		*threads;
-  char			*file;
-  int			size[2];
-  t_list		*philos;
-  int			*pos;
-};
+  int			number;
+  int			food;
+  int			eattime;
+  int			thinktime;
+}			t_conf;
 
-void			init_sdl(t_sdl *game, t_list *philos, pthread_t *threads);
-void			*sdl_loop(void *game);
+typedef struct		s_param
+{
+  t_list		*list;
+  t_conf		*conf;
+}			t_param;
+
+void			fill_conf(t_conf *conf, char *file);
 void			plist(t_list *list);
-int			lenght(t_list *list);
 void			push(t_list **list);
-void			free_sdl(t_sdl *game);
 void			_error(char *s);
+void			launch(t_conf *c);
+void			*philo_life(void *arg);
+void			init(t_conf *c);
+void			set_dep(void);
 
 #endif /* !PHILO_H */
