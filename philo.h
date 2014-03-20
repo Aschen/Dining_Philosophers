@@ -24,7 +24,7 @@
 # define MUTH		200000
 # define MUEAT		(MUTH / 2)
 # define MUSL		1000
-# define NPHIL		5
+# define NPHIL		7
 
 typedef			struct s_list	t_list;
 

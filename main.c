@@ -80,7 +80,7 @@ int		main(void)
 {
   t_list	*philo;
   t_list	*send;
-  pthread_t	philos[7];
+  pthread_t	philos[NPHIL];
   int		i;
 
   i = -1;
