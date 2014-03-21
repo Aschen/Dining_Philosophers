@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 15:42:01 2014 brunne-r
-** Last update Wed Mar 19 11:35:22 2014 brunne-r
+** Last update Fri Mar 21 15:42:30 2014 brunne-r
 */
 
 #include "philo.h"
@@ -33,7 +33,7 @@ int		philo_sleep(t_list *list)
   list->state = SLEEP;
   while (loop)
     {
-      if (list->prev->state != THINK && list->next->state == SLEEP)
+      if (list->prev->state != THINK && list->next->state != THINK)
 	{
 	  pthread_mutex_lock(&(list->stick));
 	  loop = 0;
@@ -62,10 +62,10 @@ void		*fct(void *arg)
   int		food;
   int		(*actions[3])(t_list*);
 
+  me = (t_list*)arg;
   actions[SLEEP] = &philo_sleep;
   actions[EAT] = &philo_eat;
   actions[THINK] = &philo_think;
-  me = (t_list*)arg;
   food = 1;
   while (food)
     {
@@ -94,6 +94,7 @@ int		main(void)
       if (pthread_create(&philos[i], NULL, &fct, send) < 0)
 	_error("pthread fail");
       send = send->next;
+      usleep(MUSL);
     }
   i = -1;
   while (++i < NPHIL)
