@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 16:18:33 2014 brunne-r
-** Last update Tue Mar 18 12:00:52 2014 brunne-r
+** Last update Fri Mar 21 15:23:49 2014 brunne-r
 */
 
 #include "philo.h"
@@ -33,7 +33,7 @@ void		push(t_list **list)
   t_list	*before;
 
   if (!(elem = malloc(sizeof(t_list))))
-    _error(strdup("not enough memory"));
+    _error("not enough memory");
   elem->state = SLEEP;
   pthread_mutex_init(&(elem->stick), NULL);
   if (*list)

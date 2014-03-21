@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 15:42:01 2014 brunne-r
-** Last update Wed Mar 19 11:35:22 2014 brunne-r
+** Last update Fri Mar 21 15:36:30 2014 brunne-r
 */
 
 #include "philo.h"
@@ -31,7 +31,7 @@ int		philo_sleep(t_list *list)
   list->state = SLEEP;
   while (loop)
     {
-      if (list->prev->state != THINK && list->next->state == SLEEP)
+      if (list->prev->state != THINK && list->next->state != THINK)
 	{
 	  pthread_mutex_lock(&(list->stick));
 	  loop = 0;
@@ -59,10 +59,11 @@ void		*fct(void *arg)
   int		food;
   int		(*actions[3])(t_list*);
 
+  me = (t_list*)arg;
+  signal(SIGUSR1, quitth);
   actions[SLEEP] = &philo_sleep;
   actions[EAT] = &philo_eat;
   actions[THINK] = &philo_think;
-  me = (t_list*)arg;
   food = FOOD;
   while (food)
     {
@@ -78,7 +79,7 @@ int		main(void)
   t_list	*philos;
   t_list	*send;
   t_sdl		game;
-  pthread_t	threads[NPHIL];
+  pthread_t	threads[NPHIL + 1];
   int		i;
 
   i = -1;
@@ -91,11 +92,12 @@ int		main(void)
   while (++i < NPHIL)
     {
       if (pthread_create(&threads[i], NULL, &fct, send) < 0)
-  	_error(strdup("pthread fail"));
+  	_error("pthread fail");
+      usleep(MUSL);
       send = send->next;
     }
   i = -1;
-  while (++i < NPHIL)
+  while (++i < NPHIL + 1)
     pthread_join(threads[i], NULL);
   free_sdl(&game);
   return (0);

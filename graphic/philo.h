@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 16:18:46 2014 brunne-r
-** Last update Wed Mar 19 11:35:12 2014 brunne-r
+** Last update Fri Mar 21 15:37:14 2014 brunne-r
 */
 
 #ifndef PHILO_H
@@ -65,5 +65,6 @@ int			lenght(t_list *list);
 void			push(t_list **list);
 void			free_sdl(t_sdl *game);
 void			_error(char *s);
+void			quitth(int sig);
 
 #endif /* !PHILO_H */

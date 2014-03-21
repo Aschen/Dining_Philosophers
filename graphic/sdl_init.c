@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 16:18:46 2014 brunne-r
-** Last update Wed Mar 19 11:35:12 2014 brunne-r
+** Last update Fri Mar 21 15:22:23 2014 brunne-r
 */
 
 #include "philo.h"
@@ -13,11 +13,11 @@
 static void	load_images(t_sdl *game)
 {
   if ((game->images[SLEEP] = IMG_Load("images/sleep.png")) == NULL)
-    _error(strdup("load_images : IMGLoad"));
+    _error("load_images : IMGLoad");
   if ((game->images[THINK] = IMG_Load("images/think.png")) == NULL)
-    _error(strdup("load_images : IMGLoad"));
+    _error("load_images : IMGLoad");
   if ((game->images[EAT] = IMG_Load("images/eat.png")) == NULL)
-    _error(strdup("load_images : IMGLoad"));
+    _error("load_images : IMGLoad");
 }
 
 static void	load_background(t_sdl *game)
@@ -27,9 +27,9 @@ static void	load_background(t_sdl *game)
   p.x = 0;
   p.y = 0;
   if ((game->background = IMG_Load(game->file)) == NULL)
-    _error(strdup("load_background : IMGLoad"));
+    _error("load_background : IMGLoad");
   if (SDL_BlitSurface(game->background, NULL, game->screen, &p) < 0)
-    _error(strdup("load_background : BlitSurface"));
+    _error("load_background : BlitSurface");
   SDL_Flip(game->screen);
 }
 
@@ -41,7 +41,7 @@ static void	init_game(t_sdl *game)
   game->size[X] = 600;
   game->size[Y] = 600;
   if ((game->pos = malloc(sizeof(int) * lenght(game->philos) * 2)) == NULL)
-    _error(strdup("init_game() : Malloc"));
+    _error("init_game() : Malloc");
   game->pos[i++] = 420;
   game->pos[i++] = 20;
   game->pos[i++] = 500;
@@ -60,20 +60,18 @@ static void	init_game(t_sdl *game)
 
 void		init_sdl(t_sdl *game, t_list *philos, pthread_t *threads)
 {
-  pthread_t	sdl_thread;
-
   game->threads = threads;
   game->philos = philos;
   init_game(game);
   if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    _error(strdup("init_sdl : Init"));
+    _error("init_sdl : Init");
   if (!(game->screen = SDL_SetVideoMode(game->size[X], game->size[Y]
 					, 32, SDL_HWSURFACE)))
-    _error(strdup("init_sdl : SetVideoMode"));
+    _error("init_sdl : SetVideoMode");
   SDL_WM_SetCaption("Philosophes", NULL);
   load_images(game);
   load_background(game);
-  if (pthread_create(&sdl_thread, NULL, &sdl_loop, game) < 0)
-    _error(strdup("main() : phtread_create"));
+  if (pthread_create(&threads[NPHIL], NULL, &sdl_loop, game) < 0)
+    _error("main() : phtread_create");
 }
 

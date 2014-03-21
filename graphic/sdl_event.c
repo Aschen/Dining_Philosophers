@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 16:18:46 2014 brunne-r
-** Last update Wed Mar 19 11:35:12 2014 brunne-r
+** Last update Fri Mar 21 15:40:15 2014 brunne-r
 */
 
 #include "philo.h"
@@ -17,17 +17,20 @@ static int	hook_event(SDL_Event *event)
   return (CONTINUE);
 }
 
-static void	update_state(t_sdl *game, t_list *philos)
+static int	update_state(t_sdl *game, t_list *philos)
 {
   SDL_Rect	p;
+  int		end;
 
+  end = (philos->state == SLEEP) ? 0 : 1;
   p.x = game->pos[philos->id * 2];
   p.y = game->pos[philos->id * 2 + 1];
   if (SDL_BlitSurface(game->images[(int)philos->state]
 		      , NULL, game->screen, &p) < 0)
-    _error(strdup("update_state() : BlitSurface"));
+    _error("update_state() : BlitSurface");
   if (philos->next->id > philos->id)
-    update_state(game, philos->next);
+    return (end + update_state(game, philos->next));
+  return (end);
 }
 
 void		*sdl_loop(void *arg)
@@ -45,16 +48,17 @@ void		*sdl_loop(void *arg)
   game = (t_sdl*)arg;
   while (flag)
     {
-      if (SDL_PollEvent(&event))
-	flag = hook_event(&event);
       if (SDL_BlitSurface(game->background, NULL, game->screen, &p) < 0)
-	_error(strdup("sld_loop() : BlitSurface"));
-      update_state(game, game->philos);
+	_error("sld_loop() : BlitSurface");
+      flag = update_state(game, game->philos);
+      if (SDL_PollEvent(&event) && flag)
+	flag = hook_event(&event);
       SDL_Flip(game->screen);
       usleep(1000);
     }
   while (++i < NPHIL)
-    pthread_kill(game->threads[i], SIGKILL);
+    if (pthread_kill(game->threads[i], SIGUSR1))
+      _error("pthread cannot killed");
   pthread_exit(0);
   return (NULL);
 }

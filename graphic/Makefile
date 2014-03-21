@@ -14,6 +14,7 @@ SRCS	=	main.c \
 		sdl_init.c \
 		sdl_event.c \
 		misc.c \
+		quit.c \
 
 CFLAGS	=	-W -Wall -Wextra
 
@@ -26,7 +27,7 @@ NAME	=	philo
 all:	$(NAME)
 
 $(NAME):	$(OBJS)
-	$(CC) `sdl-config --libs` -o $(NAME) $(OBJS) -lpthread -lSDL_gfx -lSDL_image
+	$(CC) `sdl-config --libs` -o $(NAME) $(OBJS) -lpthread -lSDL_image
 
 clean:
 	rm -f $(OBJS)

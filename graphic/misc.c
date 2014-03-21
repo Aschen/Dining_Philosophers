@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 16:18:33 2014 brunne-r
-** Last update Tue Mar 18 12:00:52 2014 brunne-r
+** Last update Fri Mar 21 15:21:01 2014 brunne-r
 */
 
 #include "philo.h"
@@ -13,10 +13,7 @@
 void		_error(char *s)
 {
   if (s)
-    {
-      fprintf(stderr, "%s\n", s);
-      free(s);
-    }
+    fprintf(stderr, "%s\n", s);
   else
     fprintf(stderr, "An error has occured\n");
   exit(EXIT_FAILURE);
