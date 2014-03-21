@@ -5,7 +5,7 @@
 ** Login   <brunne-r@epitech.net>
 **
 ** Started on  Mon Mar 17 16:18:46 2014 brunne-r
-** Last update Fri Mar 21 15:40:15 2014 brunne-r
+** Last update Fri Mar 21 15:43:57 2014 brunne-r
 */
 
 #include "philo.h"
@@ -57,8 +57,7 @@ void		*sdl_loop(void *arg)
       usleep(1000);
     }
   while (++i < NPHIL)
-    if (pthread_kill(game->threads[i], SIGUSR1))
-      _error("pthread cannot killed");
+    pthread_kill(game->threads[i], SIGUSR1);
   pthread_exit(0);
   return (NULL);
 }
