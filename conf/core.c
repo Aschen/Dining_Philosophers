@@ -16,10 +16,12 @@ int		philo_think(t_list *list, t_conf *c)
 
   printf("[%d] : Thinking...\n", list->id);
   list->state = THINK;
-  r = pthread_mutex_trylock(&(list->next->stick));
+  if ((r = pthread_mutex_trylock(&(list->next->stick))) < 0)
+    _error("philo_think() : trylock");
   usleep(c->thinktime);
   if (r != 0)
-    pthread_mutex_trylock(&(list->next->stick));
+    if (pthread_mutex_trylock(&(list->next->stick)) < 0)
+      _error("philo_think() : trylock");
   printf("[%d] : Prepare to eat\n", list->id);
   list->state = EAT;
   return 0;
@@ -37,7 +39,8 @@ int		philo_sleep(t_list *list, t_conf *c)
     {
       if (list->prev->state != THINK && list->next->state != THINK)
 	{
-	  pthread_mutex_lock(&(list->stick));
+	  if (pthread_mutex_lock(&(list->stick)) < 0)
+	    _error("philo_sleep() : lock");
 	  list->state = THINK;
 	  printf("[%d] : Start thinking\n", list->id);
 	  loop = 0;
@@ -53,8 +56,10 @@ int		philo_eat(t_list *list, t_conf *c)
   list->state = EAT;
   printf("[%d] : Eat like a pig !\n", list->id);
   usleep(c->eattime);
-  pthread_mutex_unlock(&(list->stick));
-  pthread_mutex_unlock(&(list->next->stick));
+  if (pthread_mutex_unlock(&(list->stick)) < 0)
+    _error("philo_sleep() : unlock");
+  if (pthread_mutex_unlock(&(list->next->stick)) < 0)
+    _error("philo_sleep() : unlock");
   list->state = SLEEP;
   printf("[%d] : Fall asleep...\n", list->id);
   return 1;

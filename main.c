@@ -16,10 +16,12 @@ int		philo_think(t_list *list)
 
   printf("[%d] : Thinking...\n", list->id);
   list->state = THINK;
-  r = pthread_mutex_trylock(&(list->next->stick));
+  if ((r = pthread_mutex_trylock(&(list->next->stick))) < 0)
+    _error("philo_think() : trylock");
   usleep(MUTH);
   if (r != 0)
-    pthread_mutex_trylock(&(list->next->stick));
+    if (pthread_mutex_trylock(&(list->next->stick)) < 0)
+      _error("philo_think() : trylock");
   list->state = EAT;
   return (0);
 }
@@ -35,7 +37,8 @@ int		philo_sleep(t_list *list)
     {
       if (list->prev->state != THINK && list->next->state != THINK)
 	{
-	  pthread_mutex_lock(&(list->stick));
+	  if (pthread_mutex_lock(&(list->stick)) < 0)
+	    _error("philo_sleep() : lock");
 	  loop = 0;
 	  list->state = THINK;
 	}
@@ -50,8 +53,10 @@ int		philo_eat(t_list *list)
   printf("[%d] : Eat like a pig !\n", list->id);
   list->state = EAT;
   usleep(MUEAT);
-  pthread_mutex_unlock(&(list->stick));
-  pthread_mutex_unlock(&(list->next->stick));
+  if (pthread_mutex_unlock(&(list->stick)) < 0)
+    _error("philo_eat() : unlock");
+  if (pthread_mutex_unlock(&(list->next->stick)) < 0)
+    _error("philo_eat() : unlock");
   list->state = SLEEP;
   return (1);
 }
@@ -92,12 +97,13 @@ int		main(void)
   while (++i < NPHIL)
     {
       if (pthread_create(&philos[i], NULL, &fct, send) < 0)
-	_error("pthread fail");
+	_error("main() : create fail");
       send = send->next;
       usleep(MUSL);
     }
   i = -1;
   while (++i < NPHIL)
-    pthread_join(philos[i], NULL);
+    if (pthread_join(philos[i], NULL) < 0)
+      _error("main() : join fail");
   return (0);
 }

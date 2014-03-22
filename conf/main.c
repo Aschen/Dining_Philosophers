@@ -17,7 +17,8 @@ void		kill_threads(pthread_t *th, int size)
   i = 0;
   while (i < size)
     {
-      pthread_kill(th[i], SIGKILL);
+      if (pthread_kill(th[i], SIGKILL) < 0)
+	_error("kill_threads() : kill");
       ++i;
     }
   _error("A thread is unreachable");

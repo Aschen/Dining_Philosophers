@@ -57,7 +57,8 @@ void		*sdl_loop(void *arg)
       usleep(1000);
     }
   while (++i < NPHIL)
-    pthread_kill(game->threads[i], SIGUSR1);
+    if (pthread_kill(game->threads[i], SIGUSR1) < 0)
+      _error("sld_loop() : kill");
   pthread_exit(0);
   return (NULL);
 }

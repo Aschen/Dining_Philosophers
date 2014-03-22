@@ -12,13 +12,7 @@
 
 void		_error(char *s)
 {
-  if (s)
-    {
-      fprintf(stderr, "%s\n", s);
-      free(s);
-    }
-  else
-    fprintf(stderr, "An error as occured\n");
+  fprintf(stderr, "%s\n", s);
   exit(EXIT_FAILURE);
 }
 
