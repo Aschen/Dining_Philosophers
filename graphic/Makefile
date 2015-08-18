@@ -27,7 +27,7 @@ NAME	=	philo
 all:	$(NAME)
 
 $(NAME):	$(OBJS)
-	$(CC) `sdl-config --libs` -o $(NAME) $(OBJS) -lpthread -lSDL_image
+	$(CC) -o $(NAME) $(OBJS) `sdl-config --libs` -lpthread -lSDL_image
 
 clean:
 	rm -f $(OBJS)

@@ -17,6 +17,7 @@
 # include <sys/types.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <pthread.h>
 
 # define SLEEP		0
 # define THINK		1
