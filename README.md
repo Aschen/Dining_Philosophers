@@ -2,7 +2,7 @@
 
 Epitech project : We have to solve the dining philosphers problem in C. [Wikipedia](https://fr.wikipedia.org/wiki/D%C3%AEner_des_philosophes)
 
-# How to
+## How to
 * Install dependencies : apt-get install libsdl1.2-dev libsdl-image1.2-dev (for graphic part)
 * Compile : make
 * Run it : ./philo
@@ -18,3 +18,4 @@ Or a configurable version
 * Edit conf.philo
 * ./philo
 
+![alt text](https://raw.githubusercontent.com/Aschen/Dining_Philosophers/master/screenshot.png "graphical")
